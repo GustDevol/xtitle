@@ -10,5 +10,6 @@ If arguments are given, outputs the title of each arguments, otherwise outputs t
 - `-s` — Activate the *snoop* mode.
 - `-e` — Escape the following characters: ', " and \\.
 - `-i` — Try to retrieve the title from the `_NET_WM_VISIBLE_NAME` atom.
+- `-l` — Prints only last word of the title to keep it small.
 - `-f FORMAT` — Use the given `printf`-style format. The only supported sequences are `%s` (for title), `%u` (for window id) and `\n`.
 - `-t NUMBER` — Truncate the title after |*NUMBER*| characters starting at the first (or the last if *NUMBER* is negative) character.
