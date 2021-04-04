@@ -11,6 +11,7 @@ xcb_ewmh_connection_t *ewmh;
 int default_screen;
 xcb_window_t root;
 bool running, visible;
+bool lastword;
 
 bool setup(void);
 wchar_t* expand_escapes(const wchar_t *src);

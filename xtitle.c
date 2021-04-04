@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 	ewmh = NULL;
 	visible = false;
 	running = true;
+        lastword = false;
 	bool snoop = false;
 	bool escaped = false;
 	wchar_t *format = NULL;
@@ -34,10 +35,10 @@ int main(int argc, char *argv[])
 
 	setlocale(LC_ALL, "");
 
-	while ((opt = getopt(argc, argv, "hvseif:t:")) != -1) {
+	while ((opt = getopt(argc, argv, "hvseilf:t:")) != -1) {
 		switch (opt) {
 			case 'h':
-				printf("xtitle [-h|-v|-s|-e|-i|-f FORMAT|-t NUMBER] [WID ...]\n");
+				printf("xtitle [-h|-v|-s|-e|-i|-l|-f FORMAT|-t NUMBER] [WID ...]\n");
 				goto end;
 				break;
 			case 'v':
@@ -53,6 +54,9 @@ int main(int argc, char *argv[])
 			case 'i':
 				visible = true;
 				break;
+                        case 'l':
+                                lastword = true;
+                                break;
 			case 'f': {
 				size_t format_len = mbsrtowcs(NULL, (const char**)&optarg, 0, NULL);
 				if (format_len == (size_t)-1) {
@@ -181,6 +185,12 @@ void output_title(xcb_window_t win, wchar_t *format, bool escaped, int truncate)
 		print_title(format, L"", win);
 		goto end;
 	}
+        if (lastword) {
+                unsigned int len = wcslen(title);
+                unsigned int i;
+                for (i = len - 1; i > 0 && title[i - 1] != L' '; i--);
+                output = title + i;
+        }
 	if (truncate) {
 		unsigned int n = abs(truncate);
 		if (wcslen(title) > (size_t)n) {
